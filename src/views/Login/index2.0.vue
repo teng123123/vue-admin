@@ -6,22 +6,14 @@
          </ul>
          <!-- 表单开始 -->
         <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" class="login-form" size="medium">
-
             <el-form-item prop="username" class="item-from">
                 <label>邮箱</label>
                 <el-input type="text" v-model="ruleForm.username" autocomplete="off"></el-input>
             </el-form-item>
-
             <el-form-item prop="password" class="item-from">
                 <label>密码</label>
                 <el-input type="password" v-model="ruleForm.password" autocomplete="off" maxlength="20" minlength="6"></el-input>
             </el-form-item>
-
-             <el-form-item prop="passwords" class="item-from" v-show="model === 'register'">
-                <label>重复密码</label>
-                <el-input type="password" v-model="ruleForm.passwords" autocomplete="off" maxlength="20" minlength="6"></el-input>
-            </el-form-item>
-
             <el-form-item prop="code" class="item-from">
                 <label>验证码</label>
                 <el-row :gutter="11">
@@ -38,86 +30,50 @@
     </div>
 </template>
 <script>
-import { reactive,ref} from '@vue/composition-api'
-import { stripscript,validatePass,validateEmail,validateVCode } from '@/utils/validate'
 export default {
     name:"login",
-    // setup(props,context){
-    //     // 这里面放data数据 生命周期，自定义函数
-    //     const menuTab=reactive([
-    //         { txt : '登录' , current : true },
-    //         { txt : '注册' , current : false}
-    //     ])
-    //     // 模块值
-    //     const model = ref('login')
-    // },
     data(){
         // 用户名
       var validateUsername = (rule, value, callback) => {
+        let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
         if (value === '') {
           callback(new Error('请输入用户名'));
-        } else if(validateEmail(value)){
+        } else if(!reg.test(value)){
           callback(new Error('用户名格式不正确'));
         } else{
           callback();
         }
       };
-      // 验证密码   
+      // 密码   
       var validatePassword = (rule, value, callback) => {
-        // 过滤后的数据
-        // console.log(stripscript(value))
-        this.ruleForm.password = stripscript(value)
-        value = this.ruleForm.password
-
+        let reg = /^(?!\D+$)(?![^a-zA-Z]+$)\S{6,20}$/
         if (value === '') {
           callback(new Error('请输入密码'));
-        } else if (validatePass(value)) {
+        } else if (!reg.test(value)) {
           callback(new Error('密码为6-20位数字加字母'));
-        } else {
-          callback();
-        }
-      };
-        // 验证重复密码   
-      var validatePasswords = (rule, value, callback) => {
-        // 如果model=== login 直接通过
-        if(this.model === "login"){  callback();}
-
-        // 过滤后的数据
-        // console.log(stripscript(value))
-        this.ruleForm.passwords = stripscript(value)
-        value = this.ruleForm.passwords
-
-        if (value === '') {
-          callback(new Error('请再次输入密码'));
-        } else if (value != this.ruleForm.password) {
-          callback(new Error('重复密码不正确'));
         } else {
           callback();
         }
       };
       //  验证码
       var validateCode = (rule, value, callback) => {
-        this.ruleForm.code = stripscript(value)
-        value = this.ruleForm.code
-       
+        let reg = /^[a-z0-9]{6}$/
         if (!value) {
           return callback(new Error('请输入验证码'));
-        }else if(validateVCode(value)){
+        }else if(!reg.test(value)){
           return callback(new Error('验证码格式有误'));
         }else{
           callback();
         }
       };
-      return{                     
-        menuTab:[
-              { txt : '登录' , current : true , type : 'login'},
-              { txt : '注册' , current : false , type : 'register'}
-          ],
-        model:'login',
-        ruleForm: {
+        return{                     
+            menuTab:[
+                { txt : '登录' , current : true },
+                { txt : '注册' , current : false}
+            ],
+            ruleForm: {
           username: '',
           password: '',
-          passwords: '',
           code: ''
         },
         rules: {
@@ -126,9 +82,6 @@ export default {
           ],
           password: [
             { validator: validatePassword, trigger: 'blur' }
-          ],
-          passwords: [
-            { validator: validatePasswords, trigger: 'blur' }
           ],
           code: [
             { validator: validateCode, trigger: 'blur' }
@@ -143,10 +96,7 @@ export default {
             this.menuTab.forEach((ele,index) => {
                 ele.current = false
             });
-          // 高光
-          data.current = true
-          // 改变注册登录
-          this.model = data.type
+           data.current = true
         }, 
         submitForm(formName) {
         this.$refs[formName].validate((valid) => {
