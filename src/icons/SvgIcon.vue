@@ -25,10 +25,8 @@ export default {
     const iconName = computed(()=>`#icon-${props.iconClass}`)
     const svgClass = computed(()=>{
       if(props.className){
-        console.log(12);
         return `svg-icon ${props.className}`;
       }else{
-          console.log(1654);
         return `svg-icon`;
       }
     })
