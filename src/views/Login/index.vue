@@ -33,16 +33,16 @@
     </div>
 </template>
 <script>
-import sha1 from 'js-sha1'
-import { Message } from 'element-ui'
-import { GetSms, Register, Login } from '@/api/login.js'
-import { reactive, ref, isRefs, onMounted } from '@vue/composition-api'
+import sha1 from 'js-sha1';
+import { Message } from 'element-ui';
+import { GetSms, Register, Login } from '@/api/login.js';
+import { reactive, ref, isRefs, onMounted } from '@vue/composition-api';
 import {
   stripscript,
   validatePass,
   validateEmail,
   validateVCode
-} from '@/utils/validate'
+} from '@/utils/validate';
 export default {
   name: 'login',
   setup(props, { refs, root }) {
@@ -203,12 +203,7 @@ export default {
       refs[formName].validate(valid => {
         if (valid) {
           // 表单验证通过
-          model.value === 'login' ? login() : register()
-          // if(model.value === "login"){
-          //   login();
-          // }else{
-          //   register();
-          // }
+          model.value === 'login' ? login() : register();
         } else {
           console.log('error submit!!')
           return false
@@ -216,7 +211,7 @@ export default {
       })
     }
     /**
-     * 登录
+     * 登录**********************************************************
      */
     const login = () => {
       let requestData = {
@@ -225,21 +220,17 @@ export default {
         code: ruleForm.code,
         module: 'login'
       }
-      Login(requestData)
-        .then(response => {
-          console.log('登陆成功');
-          // 页面跳转
-          root.$router.push({
-            name:"Console",
-            // params:{
-            //   id:""，
-            // }
-          })
+      root.$store.dispatch("app/login",requestData)
+      .then(response => {
+        console.log('登陆成功');
+        // 页面跳转
+        root.$router.push({
+          name:"Console"
         })
-        .catch(error => {})
+      }).catch(error => {});
     }
     /**
-     * 注册
+     * 注册*************************************************************
      */
     const register = () => {
       let requestData = {
