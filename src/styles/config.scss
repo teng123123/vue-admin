@@ -14,3 +14,14 @@ $layoutHeader:75px;
   -ms-#{$type}: $value;
   #{$type}: $value;
 }
+@mixin labelDom($align,$width,$line-height:"normal") {
+  label{
+    float: left;
+    text-align: $align;
+    width:$width + px;
+    line-height: $line-height + px;
+  }
+  .warp-content{
+    margin-left:$width + px;
+  }
+}
