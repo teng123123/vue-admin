@@ -23,3 +23,32 @@ li.el-submenu {
     background-color: $mainColor !important;
   }
 }
+// table 的样式
+div.el-table {
+  td,th{ text-align: center;}
+  th{ 
+    font-weight: bold;
+    color: #344a5f;  
+  }
+  .el-checkbox__input{
+    padding-left: 1px;
+  }
+}
+// dialog 样式
+.el-dialog__body{
+  padding:30px 47px;
+}
+.el-dialog__footer{
+  text-align: center;
+  padding-bottom: 50px !important;
+  .el-button{
+    width: 150px;
+    margin: 0 11px;
+  }
+}
+// from
+.el-form{
+  .el-form.item:last-child{
+    margin-bottom: 0 !important;
+  }
+}
