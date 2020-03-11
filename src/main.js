@@ -8,7 +8,10 @@ import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 // 自定义全剧组件
 import "./icons";
+// 全局方法
+// import global from "@/utils/global.js";
 
+// Vue.use(global);
 Vue.use(ElementUI);
 Vue.use(VueCompositionApi);
 Vue.config.productionTip = false;

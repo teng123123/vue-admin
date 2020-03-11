@@ -64,7 +64,7 @@
     <el-table-column prop="user" label="管理员" width="100"> </el-table-column>
     <el-table-column label="操作">
       <template slot-scope="scope">
-        <el-button type="danger" size="small">删除</el-button>
+        <el-button type="danger" size="small" @click="delete_item">删除</el-button>
         <el-button type="success" size="small">编辑</el-button>
       </template>
     </el-table-column>
@@ -73,7 +73,7 @@
   <!-- 底部分页 -->
   <el-row style="margin-top:10px;">
     <el-col :span="12" >
-      <el-button>批量删除</el-button>
+      <el-button @click="delete_all">批量删除</el-button>
     </el-col>
     <el-col :span="12">
       <el-pagination
@@ -93,11 +93,14 @@
 </template>
 <script>
 import DialogInfo from "./dialog/info";
-import { reactive,ref } from '@vue/composition-api';
+import { global } from "@/utils/global.js";
+import { reactive,ref,watch } from '@vue/composition-api';
 export default{
   name:"infoIndex",
   components:{ DialogInfo },
-  setup(props){
+  setup(props,{root}){
+    const { str,confirm } = global();
+    watch(()=> console.log(str.value));
     /**
      * 数据
      */
@@ -162,6 +165,22 @@ export default{
     const handleCurrentChange = (val)=>{
 
     }
+    const delete_item = ()=>{
+      confirm({ 
+        content:"确认删除当前信息，删除后无法恢复！！！",
+        tip:"警告",
+        fn:confirm_delete
+      });
+    } 
+    const delete_all = ()=>{
+      confirm({
+        content:"确认删除选中的数据，删除后无法恢复！！！",
+        fn:confirm_delete
+      });
+    }
+    const confirm_delete = ()=>{
+      console.log(1231231);
+    }
     return {
       // ref
       data_value,
@@ -176,6 +195,9 @@ export default{
       // method
       handleSizeChange,
       handleCurrentChange,
+      delete_item,
+      delete_all,
+      confirm_delete
     }
   }
 }

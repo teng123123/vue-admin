@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Message } from "element-ui";
+import { getToken,getUserName } from "@/utils/app";
 const BASEURL = process.env.NODE_ENV === "production" ? "" : "/devapi";
 // http://www.web-jshtml.cn/productApi
 const service = axios.create({
@@ -13,9 +14,9 @@ service.interceptors.request.use(function (config) {
     // 在发送请求之前做些什么
     // 请求头部添加参数
     console.log("请求拦截器");
-    config.headers['Tokey'] = 'tokey';
-    config.headers['userId'] = 'userId';
-    config.headers['sui'] = 'sui';
+    config.headers['Tokey'] = getToken();
+    console.log(getToken());
+    config.headers['UserName'] = getUserName();
     return config;
   }, function (error) {
     // 对请求错误做些什么
